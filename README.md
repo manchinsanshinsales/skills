@@ -33,6 +33,10 @@ repo to install.
 - [**Google Cloud Well-Architected Framework: Reliability**](./skills/cloud/google-cloud-waf-reliability)
 - [**Google Cloud Well-Architected Framework: Cost Optimization**](./skills/cloud/google-cloud-waf-cost-optimization)
 
+### Sales
+
+- [**Apollo Japan Outreach**](./skills/sales/apollo-japan-outreach) — Apollo.io で日本市場参入を狙う海外企業を絞り込み、意思決定者の連絡先を抽出し、企業別にカスタマイズしたアウトリーチメールを作成する
+
 ## Support
 
 If you need help or encounter issues with these skills, search for existing issues or open a new one in the [GitHub Issue Tracker](https://github.com/google/skills/issues).

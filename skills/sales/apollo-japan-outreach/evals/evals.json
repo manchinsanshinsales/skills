@@ -1,0 +1,22 @@
+{
+  "skill_name": "apollo-japan-outreach",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "エンタープライズAI系のSaaS企業で、日本に進出したがっていそうな海外企業を30社くらいApolloで絞り込んでリストにして。各社2名ずつ意思決定者の連絡先も欲しい。APOLLO_API_KEYは環境変数に入れてある。",
+      "expected_output": "search_accounts.py → score_accounts.py → find_contacts.py → enrich_contacts.py の順で実行し、accounts.csv と contacts.csv を作る。enrich 前にクレジット消費の上限を伝える。最後に検索数・選定数・連絡先数・使用クレジットを表で報告し、デフォルトで決めた事項 (バーティカル、閾値) を明示する。",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Apolloからエクスポートしたこの2つのCSV (companies.csv, people.csv) を使って、ゲーミング周辺機器メーカー5社に向けた日本PR・インフルエンサー提携の提案メールを、会社ごとにカスタマイズして書いて。担当者が日本人の場合は日本語で。",
+      "expected_output": "import_apollo_export.py で正規化し、企業ごとに outreach/<company>.md (観察・仮説・Razer 実績・CTA、3 通シーケンス) を作る。日本人担当者には日本語 + 英語併記。5 社の 1 通目冒頭が入れ替え不能になっている。summary.md で一覧化。email_status が unavailable の宛先にはメールを書かない。",
+      "files": ["companies.csv", "people.csv"]
+    },
+    {
+      "id": 3,
+      "prompt": "Fluence みたいなエネルギー貯蔵とか再エネ系の海外企業で日本市場を狙ってる会社を見つけて営業をかけたい。Apollo の API キーはまだ発行してない。",
+      "expected_output": "API キーの値を聞かず、Apollo UI でのフィルタ設定手順 (HQ Japan 除外、従業員 51-5000、energy キーワード、ペルソナ役職) を案内し、エクスポート後に import_apollo_export.py で読み込む流れを示す。合わせてキー発行手順と環境変数での渡し方を伝える。"
+    }
+  ]
+}
