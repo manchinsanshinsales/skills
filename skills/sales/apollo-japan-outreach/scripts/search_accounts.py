@@ -23,9 +23,12 @@ from presets import EMPLOYEE_RANGES, EXCLUDE_KEYWORDS, VERTICALS, guess_vertical
 
 def build_filters(args) -> dict:
     segment = args.segment
+    employees = list(args.employees or EMPLOYEE_RANGES[segment])
+    if args.profile == "early-stage" and not args.employees:
+        employees = ["51,200", "201,500"]      # Series A-C companies with no Japan marketing yet
     filters: dict = {
         "organization_not_locations": ["Japan"] + list(args.not_hq or []),
-        "organization_num_employees_ranges": list(args.employees or EMPLOYEE_RANGES[segment]),
+        "organization_num_employees_ranges": employees,
     }
     if args.hq:
         filters["organization_locations"] = list(args.hq)
@@ -65,6 +68,8 @@ def main() -> None:
     p.add_argument("--min-revenue", type=int)
     p.add_argument("--max-revenue", type=int)
     p.add_argument("--name", help="q_organization_name partial match")
+    p.add_argument("--profile", choices=["standard", "early-stage"], default="standard",
+                   help="early-stage = 51-500 employees (pair with --funding-stage for Series A-C)")
     p.add_argument("--max-accounts", type=int, default=100)
     p.add_argument("--exclude-domains", help="file with one domain per line to skip (existing clients)")
     p.add_argument("--no-default-excludes", action="store_true",

@@ -21,7 +21,7 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from apollo_client import ACCOUNT_COLUMNS, ApolloClient, ApolloError, read_csv, write_csv  # noqa: E402
-from presets import APAC_LOCATIONS, VERTICALS  # noqa: E402
+from presets import APAC_LOCATIONS, JAPAN_JOB_KEYWORDS, VERTICALS  # noqa: E402
 
 LATE_STAGES = ("series b", "series c", "series d", "series e", "series f", "series g",
                "private equity", "ipo", "public", "acquired", "debt financing")
@@ -101,7 +101,7 @@ def japan_job_count(postings: list[dict]) -> int:
     n = 0
     for j in postings:
         text = " ".join(str(j.get(k, "")) for k in ("title", "city", "country", "state")).lower()
-        if "japan" in text or "tokyo" in text or "osaka" in text or "日本" in text or "東京" in text:
+        if any(k in text for k in JAPAN_JOB_KEYWORDS):
             n += 1
     return n
 

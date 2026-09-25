@@ -30,6 +30,13 @@
 | `q_organization_keyword_tags` | バーティカル別 (下表) | Apollo のキーワードタグは OR 条件 |
 | `organization_latest_funding_stage_cd` (任意) | `["3","4","5","6","7","10"]` = Series B〜E / Private Equity / IPO 相当 | 日本進出予算があるステージ (値はプランにより異なるため `references/apollo-api.md` 参照) |
 
+**プロファイルの使い分け** (`search_accounts.py --profile`):
+
+| profile | 従業員 | 資金調達 | 狙い |
+|---|---|---|---|
+| `standard` (既定) | 51〜5,000 | 指定なし | 日本に小さなチームがあり、マーケ機能が無い企業。実績 (Glean, Yext 等) と同じ規模感 |
+| `early-stage` | 51〜500 | Series A〜C or 直近 6〜12 か月の調達 (`--funding-stage`) | 日本進出初期で社内リソースが足りず、現地エージェンシー需要が最も高いフェーズ。件数は多いが単価は小さい |
+
 ### バーティカル別キーワードタグ
 
 | vertical | `q_organization_keyword_tags` | 引く実績 |
@@ -50,8 +57,8 @@
 | 優先 | 役割 | `person_titles` | `person_seniorities` |
 |---|---|---|---|
 | 1 | 日本責任者 | `Country Manager Japan, General Manager Japan, Head of Japan, Japan Country Lead, President Japan, Managing Director Japan, Japan Marketing Manager, Marketing Manager Japan, Field Marketing Manager Japan` | `c_suite, vp, head, director, manager` |
-| 2 | APAC / International マーケ | `Head of APAC Marketing, APAC Marketing Director, VP Marketing APAC, Head of International Marketing, Director of International Marketing, Head of Global Expansion, Head of International Expansion, VP International, General Manager APAC, Head of Field Marketing APAC, Regional Marketing Manager APAC` | `c_suite, vp, head, director` |
-| 3 | 本社マーケ責任者 | `Chief Marketing Officer, VP Marketing, Vice President of Marketing, Head of Marketing, Head of Demand Generation, VP Demand Generation, Director of Field Marketing, Head of Partner Marketing` | `c_suite, vp, head` |
+| 2 | APAC / International マーケ | `Head of APAC Marketing, APAC Marketing Director, VP Marketing APAC, Head of International Marketing, Director of International Marketing, Head of Global Expansion, Head of International Expansion, VP International, VP International Growth, General Manager APAC, Managing Director APAC, VP APAC, Head of Field Marketing APAC, Regional Marketing Manager APAC, Head of International Partnerships` | `c_suite, vp, head, director` |
+| 3 | 本社マーケ責任者 | `Chief Marketing Officer, Chief Commercial Officer, VP Marketing, Vice President of Marketing, VP Global Marketing, Head of Global Marketing, Director of Global Marketing, Head of Marketing, Head of Demand Generation, VP Demand Generation, Director of Field Marketing, Head of Partner Marketing` | `c_suite, vp, head` |
 
 補足: 優先 1 を探すときは `person_locations: ["Japan"]` も付ける。優先 2 は `person_locations` に
 `["Singapore","Australia","Hong Kong","South Korea","Japan"]` を付けると精度が上がる。
@@ -83,8 +90,8 @@
 | 優先 | 役割 | `person_titles` | `person_seniorities` |
 |---|---|---|---|
 | 1 | 日本マーケ / PR | `Marketing Manager Japan, Japan Marketing Manager, PR Manager Japan, Country Manager Japan, Brand Manager Japan, Community Manager Japan` | `head, director, manager` |
-| 2 | APAC PR / マーケ | `Head of APAC Marketing, APAC PR Manager, Regional Marketing Manager APAC, Head of Communications APAC, Influencer Marketing Manager APAC` | `vp, head, director, manager` |
-| 3 | 本社 PR / ブランド | `Head of PR, Director of Communications, VP Communications, Head of Global Communications, Head of Influencer Marketing, Director of Influencer Marketing, Head of Brand Marketing, VP Brand, Head of Community` | `c_suite, vp, head, director` |
+| 2 | APAC PR / マーケ | `Head of APAC Marketing, APAC PR Manager, Regional Marketing Manager APAC, Head of Communications APAC, Influencer Marketing Manager APAC, Head of International Partnerships` | `vp, head, director, manager` |
+| 3 | 本社 PR / ブランド | `Head of PR, Head of Global PR, Director of Communications, VP Communications, Head of Global Communications, Head of Influencer Marketing, Director of Influencer Marketing, Influencer Marketing Lead, Head of Brand Marketing, VP Brand Marketing, VP Brand, Head of Community` | `c_suite, vp, head, director` |
 
 ---
 
@@ -106,7 +113,7 @@
 | シグナル | 取り方 | 意味 |
 |---|---|---|
 | 日本在住社員 1〜30 名 | people search `organization_ids` + `person_locations: ["Japan"]` の `total_entries` | 拠点はあるが機能が足りない。**最も熱い** |
-| 日本の求人 (Tokyo, Japan, 日本語) | `organizations/{id}/job_postings` (クレジット消費) or Web 検索 `<company> careers Tokyo` | 投資意思が確定している |
+| 日本・APAC の求人 | `organizations/{id}/job_postings` (クレジット消費) or Web 検索 `<company> careers Tokyo`。求人タイトル・勤務地に `Japan, Tokyo, Japanese, APAC, Country Manager, Localization` を含むものを数える | 投資意思が確定している。Localization 職の募集はコンテンツ案件の直球 |
 | 直近 12 か月の Japan 関連プレスリリース | Web 検索 `<company> Japan launch` / `<company> 日本 提携` | 出て行く決意 or 出たが伸びていない |
 | 日本語サイトがある / 無い | `<domain>/ja` `<domain>/jp` を確認 | 無い = ローカライズが刺さる。ある = 質を見て事例・オウンドメディアを提案 |
 | 日本企業との提携・代理店契約 | Web 検索 `<company> 販売代理店` `<company> パートナー 日本` | 商社任せ = 自社マーケ不在 |
